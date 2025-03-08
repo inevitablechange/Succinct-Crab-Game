@@ -3673,6 +3673,7 @@ dependencies = [
 name = "snake-game-script"
 version = "0.1.0"
 dependencies = [
+ "clap",
  "hex",
  "serde",
  "serde_json",
