@@ -1,7 +1,7 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-const gridSize = 20; // 각 셀의 크기
+const gridSize = 20;
 const canvasWidth = canvas.width;
 const canvasHeight = canvas.height;
 let snake = [];
@@ -10,13 +10,13 @@ let score = 0;
 let gameInterval;
 let currentDirection = "RIGHT";
 let gameOver = false;
-let obstacles = []; // 장애물 좌표 배열
+let obstacles = [];
 
-// 뱀 머리 이미지
+// Snake head image
 const snakeHeadImg = new Image();
 snakeHeadImg.src = "../assets/Succinct_crab.png";
 
-// 먹이 이미지
+// Food image
 const foodImg = new Image();
 foodImg.src = "../assets/Succinct_crisis.svg";
 
@@ -27,7 +27,7 @@ function init() {
   gameOver = false;
   generateFood();
 
-  // 장애물 배열 초기화 및 무작위 장애물 10개 생성
+  // Initialize obstacles array and generate 10 random obstacles
   obstacles = [];
   while (obstacles.length < 10) {
     const obstacle = {
@@ -35,7 +35,7 @@ function init() {
       y: Math.floor(Math.random() * (canvasHeight / gridSize)),
     };
 
-    // 장애물이 초기 뱀 위치나 먹이와 겹치지 않도록 검사
+    // Ensure obstacle doesn't overlap with snake or food or another obstacle
     if (
       snake.some(
         (segment) => segment.x === obstacle.x && segment.y === obstacle.y
@@ -78,7 +78,7 @@ function update() {
       break;
   }
 
-  // 보드 경계 체크
+  // Check boundaries and self-collision
   if (
     head.x < 0 ||
     head.x >= canvasWidth / gridSize ||
@@ -90,7 +90,7 @@ function update() {
     return;
   }
 
-  // 장애물과 충돌 검사
+  // Check collision with obstacles
   if (
     obstacles.some((obstacle) => obstacle.x === head.x && obstacle.y === head.y)
   ) {
@@ -109,11 +109,11 @@ function update() {
 }
 
 function draw() {
-  // 캔버스 클리어
+  // Clear canvas
   ctx.fillStyle = "#191919";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // 장애물 그리기 (회색)
+  // Draw obstacles in gray
   ctx.fillStyle = "gray";
   obstacles.forEach((obstacle) => {
     ctx.fillRect(
@@ -124,11 +124,11 @@ function draw() {
     );
   });
 
-  // 뱀 그리기
+  // Draw snake
   for (let i = 0; i < snake.length; i++) {
     const segment = snake[i];
     if (i === 0) {
-      // 머리: 기존 이미지 사용
+      // Head uses snakeHeadImg
       if (snakeHeadImg.complete) {
         ctx.drawImage(
           snakeHeadImg,
@@ -147,7 +147,7 @@ function draw() {
         );
       }
     } else {
-      // 꼬리: '../assets/Succinct_logo.svg' 이미지 사용
+      // Tail uses foodImg
       if (foodImg.complete) {
         ctx.drawImage(
           foodImg,
@@ -168,7 +168,7 @@ function draw() {
     }
   }
 
-  // 먹이 그리기
+  // Draw food
   if (foodImg.complete) {
     ctx.drawImage(
       foodImg,
@@ -233,18 +233,40 @@ document.getElementById("resetBtn").addEventListener("click", function () {
 document
   .getElementById("proofBtn")
   .addEventListener("click", async function () {
+    const proofBtn = document.getElementById("proofBtn");
+    proofBtn.disabled = true;
+
     try {
-      const response = await fetch(`${SERVER_URL}/api/generate-proof`, {
+      console.log("Requesting core proof generation for score:", score);
+
+      const response = await fetch("http://localhost:3000/api/generate-proof", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ score: score }),
       });
+
+      if (!response.ok) {
+        throw new Error(
+          "An error occurred while generating the proof on the server."
+        );
+      }
+
       const data = await response.json();
-      alert("Proof generated successfully!\nProof ID: " + data.proofId);
+      alert("Core Proof generated successfully!\nProof ID: " + data.proofId);
+      console.log("Generated Core Proof:", data);
     } catch (err) {
-      console.error("Proof generation error:", err);
-      alert("Proof generation failed.");
+      console.error("Core proof generation error:", err);
+      alert("Failed to generate Core Proof.");
+    } finally {
+      proofBtn.disabled = false;
     }
   });
 
-window.onload = init;
+// After page load, display the instruction modal and start game on clicking "Start Game"
+window.onload = function () {
+  const closeModalBtn = document.getElementById("closeModal");
+  closeModalBtn.addEventListener("click", function () {
+    document.getElementById("instruction-modal").style.display = "none";
+    init();
+  });
+};
