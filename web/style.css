@@ -1,0 +1,66 @@
+@font-face {
+  font-family: "Oracle";
+  src: url("../assets/fonts/ABCOracleVariable-Trial.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: "Oracle", sans-serif;
+  background-color: #191919;
+  color: #ff00d1;
+  text-align: center;
+}
+
+h1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+#game-container {
+  position: relative;
+  margin: 20px auto;
+  width: 700px;
+  height: 500px;
+  border: 2px solid #ff00d1;
+  background-color: black;
+}
+
+#gameCanvas {
+  display: block;
+  background-color: #191919;
+}
+
+#score {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: black;
+  color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+#controls {
+  margin-top: 20px;
+}
+
+button {
+  font-size: 16px;
+  padding: 10px 20px;
+  margin: 0 10px;
+  cursor: pointer;
+  background-color: black;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #e600bc;
+}
