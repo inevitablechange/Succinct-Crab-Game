@@ -14,11 +14,11 @@ let obstacles = [];
 
 // Snake head image
 const snakeHeadImg = new Image();
-snakeHeadImg.src = "../assets/Succinct_crab.png";
+snakeHeadImg.src = "/assets/Succinct_crab.png";
 
 // Food image
 const foodImg = new Image();
-foodImg.src = "../assets/Succinct_crisis.svg";
+foodImg.src = "/assets/Succinct_crisis.svg";
 
 function init() {
   snake = [{ x: 5, y: 5 }];

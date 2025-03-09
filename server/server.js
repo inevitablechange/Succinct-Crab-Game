@@ -17,7 +17,9 @@ app.post("/api/generate-proof", (req, res) => {
 
   const scriptDir = path.join(__dirname, "../script");
 
-  const command = "cargo run --release -- --prove";
+  const command = `cargo run --release -- --prove --score ${score}`;
+
+  console.log(command);
 
   exec(command, { cwd: scriptDir }, (error, stdout, stderr) => {
     if (error) {

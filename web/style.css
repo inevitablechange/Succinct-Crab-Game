@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Oracle";
-  src: url("../assets/fonts/ABCOracleVariable-Trial.ttf") format("truetype");
+  src: url("/assets/fonts/ABCOracleVariable-Trial.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
